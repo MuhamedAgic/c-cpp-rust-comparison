@@ -1,5 +1,7 @@
-
-
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
 uint8_t *unpack_dns(uint8_t *src) {
     char *buf, *dst;
@@ -57,7 +59,25 @@ int DNS_Unpack_Domain_Name(uint8_t *dst, uint8_t *src, uint8_t *buf_begin) {
 }
 
 
+void simple_test() {
+    char* input = "\x06google\x03com\0";
+    char* result = unpack_dns(input);
+    printf(result);
+}
+
+
 int main() {
+    char* domain_name = "www.google.com";
+    printf("Unpacking: ");
+    printf(domain_name);
+    printf("\n");
+    char* result = unpack_dns(domain_name);
+    printf(result);
+    printf("\n");
+    
+    
+    simple_test();
+    
     return 0;
 }
 
