@@ -120,6 +120,33 @@ pub fn decode_dns_name<'a>(mut input: &'a [u8], mut backlog: &'a [u8]) -> Option
 }
 
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn simple() {
+        let input = b"\x06google\x03com\0";
+
+        assert_eq!(
+            decode_dns_name(&input[..], &[]).as_deref().unwrap(),
+            b"google.com"
+        );
+    }
+
+    #[test]
+    fn simple_backref() {
+        let pkt = b"\x06google\x03com\0\x03www\xC0\x00";
+
+        assert_eq!(
+            decode_dns_name(&pkt[12..], &pkt[..]).as_deref().unwrap(),
+            b"www.google.com"
+        );
+    }
+}
+
+
+
 fn main() {
     println!("Hello, world!");
 }
